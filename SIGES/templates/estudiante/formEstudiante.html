@@ -1,0 +1,535 @@
+<form enctype="multipart/form-data" method="post" id="form_registro" class="user needs-validation" novalidate>
+  {% csrf_token %}
+  {% comment %}Aqui empieza la card de nombres y apellido{% endcomment %}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Nombres y Apellido</h4>
+      <div class="form-group">
+        <label for="nombre" class="control-label">Nombres*</label>
+        <input type="text" id="nombre" name="first_name" class="form-control" required
+          data-error="El nombre es requerido" placeholder="Nombres del aspirante" pattern="^[a-zA-ZáéíóöúüñÁÉÍÓÚÜÑ ']+$"
+          value="{{ formulario.first_name.value|default_if_none:'' }}" />
+        <div class="help-block"></div>
+      </div>
+      <div class="form-group">
+        <label for="apellido" class="control-label">Apellidos*</label>
+        <input type="text" id="apellido" name="last_name" class="form-control" required
+          data-error="El apellido es requerido" placeholder="Apellidos del aspirante"
+          pattern="^[a-zA-ZáéíóöúüñÁÉÍÓÚÜÑ ']+$" value="{{ formulario.last_name.value|default_if_none:'' }}" />
+        <div class="help-block"></div>
+      </div>
+      <div class="card">
+        <label for="imagen" class="control-label">Imagen de Perfil*</label>
+        {% if formulario.instance.imagen_perfil %}
+        <input type="file" accept="image/*" class="form-control" name="imagen_perfil" id="imagen_perfil" />
+        {% else %}
+        <input type="file" accept="image/*" required class="form-control" name="imagen_perfil" id="imagen_perfil" />
+        <div class="invalid-feedback">Sube una foto de perfil </div>
+        {% endif %}
+        
+        
+        
+        <div class="text-center">
+          <br>
+          {% if formulario.instance.imagen_perfil %}
+          <img id="vista-previa_perfil" src="{{ formulario.instance.imagen_perfil.url }}"
+            alt="Vista previa de la imagen de perfil" style="display: block;" />
+          {% else %}
+          <img id="vista-previa_perfil" style="display: none;" />
+          {% endif %}
+        </div>
+        
+        <div class="help-block"></div>
+      </div>
+    </div>
+  </div>
+  {% comment %}Aqui Termina la card de nombres y apellido{% endcomment %}
+  <hr />
+  {% comment %}Aqui empieza la card de datos de documento de identidad{% endcomment %}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Tipo de Documento de Idetificacion</h4>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="di" class="control-label">Documento de identidad*</label>
+          <div class="input-group custom-group">
+            <select id="di_tipo" name="di_tipo" class="form-control" required
+              data-error="Seleccione el tipo de documento de identidad" title="Tipo de documento"
+              value="{{ formulario.di_tipo.value|default_if_none:'' }}">
+              <option value="dui" selected="selected">DUI</option>
+              <option value="nie">NIE</option>
+              <option value="pasaporte">Pasaporte</option>
+            </select>
+            <input type="text" pattern="[0-9]+" id="di" name="di" class="form-control" required
+              data-error="El documento de identidad es requerido" placeholder="Documento de identidad" maxlength="10"
+              value="{{ formulario.di.value|default_if_none:'' }}" />
+            <div class="invalid-feedback">Ingrese un numero de documento valido </div>
+
+          </div>
+          <div class="help-block"></div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <label for="imagen" class="control-label">Imagen del documento de identidad*</label>
+          {% if formulario.instance.imagen_documento %}
+          <input type="file" value="{{ formulario.instance.imagen_documento.url|default_if_none:'#' }}" accept="image/*"
+            class="form-control" name="imagen_documento" id="imagen_documento" />
+          {% else %}
+          <input type="file" required accept="image/*" class="form-control" name="imagen_documento" id="imagen_documento" />
+          
+          <div class="invalid-feedback">Sube un foto de tu documento de identificacion </div>
+          
+          {% endif %}
+
+
+          <div class="text-center">
+            {% if formulario.instance.imagen_documento %}
+            <img id="vista-previa_doc" src="{{ formulario.instance.imagen_documento.url }}"
+              alt="Vista previa de la imagen" style="display: block;" />
+            {% else %}
+            <img id="vista-previa_doc" style="display: none;" />
+            {% endif %}
+          </div>
+
+          
+
+          <div class="help-block"></div>
+        </div>
+      </div>
+    </div>
+  </div> {% comment %}Aqui termina la tarjeta de documento de identificacion{% endcomment %}
+  <hr />
+  {% comment %}Aqui empieza la tajeta de medios de contacto{% endcomment %}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Medios de Contacto</h4>
+      <div class="form-group">
+        <label for="correo" class="control-label">Correo electrónico*</label>
+        <input type="email" id="email" name="email" class="form-control" required
+          data-error="El correo electrónico es inválido" value="{{ formulario.email.value|default_if_none:'' }}" />
+        <div class="help-block"></div>
+      </div>
+      <div class="form-group">
+        <label for="telefono" class="control-label">Teléfono*</label>
+        <input pattern="[0-9]+" type="text" id="telefono" name="telefono" class="form-control telefono" required
+          data-error="El teléfono es requerido" maxlength="9"
+          value="{{ formulario.telefono.value|default_if_none:'' }}" />
+        <div class="invalid-feedback">Ingrese un numero de telefono valido </div>
+
+        <div class="help-block"></div>
+      </div>
+      <div class="form-group">
+        <label for="carrera" class="control-label">Carrera*</label>
+        <select id="carrera" name="carrera" class="form-control" required data-error="Por favor seleecione su carrera"
+          value="{{formulario.carrera.value|default_if_none:''}}">
+          <option value="" selected="selected"></option>
+          <option value="1">Ingeniería Agronómica</option>
+          <option value="2">Licenciatura en Medicina Veterinaria y Zootecnia</option>
+          <option value="3">Maestría en Gestión Integral del Agua</option>
+          <option value="4">Licenciatura en Administración de Empresas</option>
+          <option value="5">Licenciatura en Contaduría Pública</option>
+          <option value="6">Licenciatura en Economía</option>
+          <option value="7">Licenciatura en Mercadeo Internacional</option>
+          <option value="8">Maestría en Administración de Empresas</option>
+          <option value="9">Maestría en Administración Financiera</option>
+          <option value="10">Licenciatura en Geofísica</option>
+          <option value="11">Licenciatura en Biología</option>
+          <option value="12">Licenciatura en Física</option>
+          <option value="13">Licenciatura en Matemática</option>
+          <option value="14">Licenciatura en Estadística</option>
+          <option value="15">Licenciatura en Ciencias Químicas</option>
+          <option value="16">Licenciatura en Física</option>
+          <option value="17">Licenciatura en Biología</option>
+          <option value="18">Maestría en Didáctica de la Matemática</option>
+          <option value="19">Maestría en Química</option>
+          <option value="20">Maestría en Física</option>
+          <option value="21">Maestría en Gestión Ambiental</option>
+          <option value="22">Manejo Sustentable de los Recursos Naturales Continentales</option>
+          <option value="23">Profesorado en Ciencias Naturales (tercer ciclo y bachillerato)</option>
+          <option value="24">Profesorado en Educación Media (enseñanza de la biología)</option>
+          <option value="25">Profesorado en Matemática (tercer ciclo y bachillerato)</option>
+          <option value="26">Curso de Formación Pedagógica para Profesionales</option>
+          <option value="27">Licenciatura en Filosofía</option>
+          <option value="28">Licenciatura en Filosofía</option>
+          <option value="29">Licenciatura en Sociología</option>
+          <option value="30">Licenciatura en Psicología</option>
+          <option value="31">Licenciatura en Letras</option>
+          <option value="32">Licenciatura en Periodismo</option>
+          <option value="33">Licenciatura en Idioma Inglés</option>
+          <option value="34">Licenciatura en Idioma Inglés (enseñanza)</option>
+          <option value="35">Licenciatura en Lenguas Modernas (francés e inglés)</option>
+          <option value="36">Licenciatura en Educación (servicio alternativo)</option>
+          <option value="37">Licenciatura en Educación</option>
+          <option value="38">Licenciatura en Educación (educación física)</option>
+          <option value="39">Licenciatura en Artes Plásticas</option>
+          <option value="40">Licenciatura en Historia</option>
+          <option value="41">Licenciatura en Trabajo Social</option>
+          <option value="42">Licenciatura en Antropología Sociocultural</option>
+          <option value="43">Maestría en Derechos Humanos y Educación para la Paz</option>
+          <option value="44">Maestría en Métodos y Técnicas de Investigación Social</option>
+          <option value="45">Maestría en Traducción (inglés-español / español-inglés)</option>
+          <option value="46">Maestría en Didáctica y Formación del Profesorado</option>
+          <option value="47">Maestría en Didáctica para la Formación Docente</option>
+          <option value="48">Maestría en Formación para la Docencia Universitaria</option>
+          <option value="49">Profesorado en Educación Parvularia</option>
+          <option value="50">Profesorado en Educación Básica (primero y segundo ciclos)</option>
+          <option value="51">Profesorado en Educación Media (enseñanza del inglés)</option>
+          <option value="52">Profesorado en Lenguaje y Literatura (tercer ciclo)</option>
+          <option value="53">Profesorado en Idioma Inglés (tercer ciclo)</option>
+          <option value="54">Profesorado en Ciencias Sociales (tercer ciclo)</option>
+          <option value="55">Técnico en Bibliotecología</option>
+          <option value="56">Arquitectura</option>
+          <option value="57">Ingeniería Civil</option>
+          <option value="58">Ingeniería Industrial</option>
+          <option value="59">Ingeniería Mecánica</option>
+          <option value="60">Ingeniería Eléctrica</option>
+          <option value="61">Ingeniería Química</option>
+          <option value="62">Ingeniería de Alimentos</option>
+          <option value="63">Ingeniería en Sistemas Informáticos</option>
+          <option value="64">Maestría en Gestión de Recursos Hidrológicos</option>
+          <option value="65">Licenciatura en Ciencias Jurídicas</option>
+          <option value="66">Licenciatura en Relaciones Internacionales</option>
+          <option value="67">Maestría en Relaciones Internacionales</option>
+          <option value="68">Doctorado en Medicina</option>
+          <option value="69">Licenciatura en Laboratorio Clínico</option>
+          <option value="70">Licenciatura en Anestesiología e Inhaloterapia</option>
+          <option value="71">Licenciatura en Radiología e Imágenes</option>
+          <option value="72">Licenciatura en Nutrición</option>
+          <option value="73">Licenciatura en Educación para la Salud</option>
+          <option value="74">Licenciatura en Ecotecnología</option>
+          <option value="75">Licenciatura en Salud Materno Infantil</option>
+          <option value="76">Licenciatura en Fisioterapia y Terapia Ocupacional</option>
+          <option value="77">Licenciatura en Salud Ambiental</option>
+          <option value="78">Licenciatura en Enfermería</option>
+          <option value="79">Maestría en Salud Pública</option>
+          <option value="80">Maestría en Servicios Integrales de Salud Sexual y Reproductiva</option>
+          <option value="81">Maestría en Educación, en Salud Sexual y Reproductiva</option>
+          <option value="82">Tecnología en Anestesiología</option>
+          <option value="83">Tecnología en Radiología</option>
+          <option value="84">Tecnología en Fisioterapia</option>
+          <option value="85">Técnico en Laboratorio Clínico</option>
+
+        </select>
+        <input type="hidden" id="carrera_texto" name="carrera_texto">
+        <div class="invalid-feedback">Seleccione una carrera </div>
+      </div>
+      <div class="form-group">
+        <label for="pais" class="control-label">País de residencia*</label>
+        <select id="pais" name="paisResidencia" class="form-control" required
+          data-error="Seleccione el país de residencia"
+          value="{{ formulario.paisResidencia.value|default_if_none:'' }}">
+          <option value="" selected="selected"></option>
+          <option value="1">El Salvador</option>
+          <option value="2">Afganistán</option>
+          <option value="3">Albania</option>
+          <option value="4">Alemania</option>
+          <option value="5">Algeria</option>
+          <option value="6">Andorra</option>
+          <option value="7">Angola</option>
+          <option value="8">Anguila</option>
+          <option value="9">Antártida</option>
+          <option value="10">Antigua y Barbuda</option>
+          <option value="11">Antillas Neerlandesas</option>
+          <option value="12">Arabia Saudita</option>
+          <option value="13">Argentina</option>
+          <option value="14">Armenia</option>
+          <option value="15">Aruba</option>
+          <option value="16">Australia</option>
+          <option value="17">Austria</option>
+          <option value="18">Azerbayán</option>
+          <option value="19">Bélgica</option>
+          <option value="20">Bahamas</option>
+          <option value="21">Bahrein</option>
+          <option value="22">Bangladesh</option>
+          <option value="23">Barbados</option>
+          <option value="24">Belice</option>
+          <option value="25">Benín</option>
+          <option value="26">Bhután</option>
+          <option value="27">Bielorrusia</option>
+          <option value="28">Birmania</option>
+          <option value="29">Bolivia</option>
+          <option value="30">Bosnia y Herzegovina</option>
+          <option value="31">Botsuana</option>
+          <option value="32">Brasil</option>
+          <option value="33">Brunéi</option>
+          <option value="34">Bulgaria</option>
+          <option value="35">Burkina Faso</option>
+          <option value="36">Burundi</option>
+          <option value="37">Cabo Verde</option>
+          <option value="38">Camboya</option>
+          <option value="39">Camerún</option>
+          <option value="40">Canadá</option>
+          <option value="41">Chad</option>
+          <option value="42">Chile</option>
+          <option value="43">China</option>
+          <option value="44">Chipre</option>
+          <option value="45">Ciudad del Vaticano</option>
+          <option value="46">Colombia</option>
+          <option value="47">Comoras</option>
+          <option value="48">Congo</option>
+          <option value="49">Congo</option>
+          <option value="50">Corea del Norte</option>
+          <option value="51">Corea del Sur</option>
+          <option value="52">Costa de Marfil</option>
+          <option value="53">Costa Rica</option>
+          <option value="54">Croacia</option>
+          <option value="55">Cuba</option>
+          <option value="56">Dinamarca</option>
+          <option value="57">Dominica</option>
+          <option value="58">Ecuador</option>
+          <option value="59">Egipto</option>
+          <option value="60">Emiratos Árabes Unidos</option>
+          <option value="61">Eritrea</option>
+          <option value="62">Eslovaquia</option>
+          <option value="63">Eslovenia</option>
+          <option value="64">España</option>
+          <option value="65">Estados Unidos de América</option>
+          <option value="66">Estonia</option>
+          <option value="67">Etiopía</option>
+          <option value="68">Filipinas</option>
+          <option value="69">Finlandia</option>
+          <option value="70">Fiyi</option>
+          <option value="71">Francia</option>
+          <option value="72">Gabón</option>
+          <option value="73">Gambia</option>
+          <option value="74">Georgia</option>
+          <option value="75">Ghana</option>
+          <option value="76">Gibraltar</option>
+          <option value="77">Granada</option>
+          <option value="78">Grecia</option>
+          <option value="79">Groenlandia</option>
+          <option value="80">Guadalupe</option>
+          <option value="81">Guam</option>
+          <option value="82">Guatemala</option>
+          <option value="83">Guayana Francesa</option>
+          <option value="84">Guernsey</option>
+          <option value="85">Guinea</option>
+          <option value="86">Guinea Ecuatorial</option>
+          <option value="87">Guinea-Bissau</option>
+          <option value="88">Guyana</option>
+          <option value="89">Haití</option>
+          <option value="90">Honduras</option>
+          <option value="91">Hong kong</option>
+          <option value="92">Hungría</option>
+          <option value="93">India</option>
+          <option value="94">Indonesia</option>
+          <option value="95">Irán</option>
+          <option value="96">Irak</option>
+          <option value="97">Irlanda</option>
+          <option value="98">Isla Bouvet</option>
+          <option value="99">Isla de Man</option>
+          <option value="100">Isla de Navidad</option>
+          <option value="101">Isla Norfolk</option>
+          <option value="102">Islandia</option>
+          <option value="103">Islas Bermudas</option>
+          <option value="104">Islas Caimán</option>
+          <option value="105">Islas Cocos (Keeling)</option>
+          <option value="106">Islas Cook</option>
+          <option value="107">Islas de Åland</option>
+          <option value="108">Islas Feroe</option>
+          <option value="109">Islas Georgias del Sur y Sandwich del Sur</option>
+          <option value="110">Islas Heard y McDonald</option>
+          <option value="111">Islas Maldivas</option>
+          <option value="112">Islas Malvinas</option>
+          <option value="113">Islas Marianas del Norte</option>
+          <option value="114">Islas Marshall</option>
+          <option value="115">Islas Pitcairn</option>
+          <option value="116">Islas Salomón</option>
+          <option value="117">Islas Turcas y Caicos</option>
+          <option value="118">Islas Ultramarinas Menores de Estados Unidos</option>
+          <option value="119">Islas Vírgenes Británicas</option>
+          <option value="120">Islas Vírgenes de los Estados Unidos</option>
+          <option value="121">Israel</option>
+          <option value="122">Italia</option>
+          <option value="123">Jamaica</option>
+          <option value="124">Japón</option>
+          <option value="125">Jersey</option>
+          <option value="126">Jordania</option>
+          <option value="127">Kazajistán</option>
+          <option value="128">Kenia</option>
+          <option value="129">Kirgizstán</option>
+          <option value="130">Kiribati</option>
+          <option value="131">Kuwait</option>
+          <option value="132">Líbano</option>
+          <option value="133">Laos</option>
+          <option value="134">Lesoto</option>
+          <option value="135">Letonia</option>
+          <option value="136">Liberia</option>
+          <option value="137">Libia</option>
+          <option value="138">Liechtenstein</option>
+          <option value="139">Lituania</option>
+          <option value="140">Luxemburgo</option>
+          <option value="141">México</option>
+          <option value="142">Mónaco</option>
+          <option value="143">Macao</option>
+          <option value="144">Macedônia</option>
+          <option value="145">Madagascar</option>
+          <option value="146">Malasia</option>
+          <option value="147">Malawi</option>
+          <option value="148">Mali</option>
+          <option value="149">Malta</option>
+          <option value="150">Marruecos</option>
+          <option value="151">Martinica</option>
+          <option value="152">Mauricio</option>
+          <option value="153">Mauritania</option>
+          <option value="154">Mayotte</option>
+          <option value="155">Micronesia</option>
+          <option value="156">Moldavia</option>
+          <option value="157">Mongolia</option>
+          <option value="158">Montenegro</option>
+          <option value="159">Montserrat</option>
+          <option value="160">Mozambique</option>
+          <option value="161">Namibia</option>
+          <option value="162">Nauru</option>
+          <option value="163">Nepal</option>
+          <option value="164">Nicaragua</option>
+          <option value="165">Niger</option>
+          <option value="166">Nigeria</option>
+          <option value="167">Niue</option>
+          <option value="168">Noruega</option>
+          <option value="169">Nueva Caledonia</option>
+          <option value="170">Nueva Zelanda</option>
+          <option value="171">Omán</option>
+          <option value="172">Países Bajos</option>
+          <option value="173">Pakistán</option>
+          <option value="174">Palau</option>
+          <option value="175">Palestina</option>
+          <option value="176">Panamá</option>
+          <option value="177">Papúa Nueva Guinea</option>
+          <option value="178">Paraguay</option>
+          <option value="179">Perú</option>
+          <option value="180">Polinesia Francesa</option>
+          <option value="181">Polonia</option>
+          <option value="182">Portugal</option>
+          <option value="183">Puerto Rico</option>
+          <option value="184">Qatar</option>
+          <option value="185">Reino Unido</option>
+          <option value="186">República Centroafricana</option>
+          <option value="187">República Checa</option>
+          <option value="188">República Dominicana</option>
+          <option value="189">Reunión</option>
+          <option value="190">Ruanda</option>
+          <option value="191">Rumanía</option>
+          <option value="192">Rusia</option>
+          <option value="193">Sahara Occidental</option>
+          <option value="194">Samoa</option>
+          <option value="195">Samoa Americana</option>
+          <option value="196">San Bartolomé</option>
+          <option value="197">San Cristóbal y Nieves</option>
+          <option value="198">San Marino</option>
+          <option value="199">San Martín (Francia)</option>
+          <option value="200">San Pedro y Miquelón</option>
+          <option value="201">San Vicente y las Granadinas</option>
+          <option value="202">Santa Elena</option>
+          <option value="203">Santa Lucía</option>
+          <option value="204">Santo Tomé y Príncipe</option>
+          <option value="205">Senegal</option>
+          <option value="206">Serbia</option>
+          <option value="207">Seychelles</option>
+          <option value="208">Sierra Leona</option>
+          <option value="209">Singapur</option>
+          <option value="210">Siria</option>
+          <option value="211">Somalia</option>
+          <option value="212">Sri lanka</option>
+          <option value="213">Sudáfrica</option>
+          <option value="214">Sudán</option>
+          <option value="215">Suecia</option>
+          <option value="216">Suiza</option>
+          <option value="217">Surinám</option>
+          <option value="218">Svalbard y Jan Mayen</option>
+          <option value="219">Swazilandia</option>
+          <option value="220">Tadjikistán</option>
+          <option value="221">Tailandia</option>
+          <option value="222">Taiwán</option>
+          <option value="223">Tanzania</option>
+          <option value="224">Territorio Británico del Océano Índico</option>
+          <option value="225">Territorios Australes y Antárticas Franceses</option>
+          <option value="226">Timor Oriental</option>
+          <option value="227">Togo</option>
+          <option value="228">Tokelau</option>
+          <option value="229">Tonga</option>
+          <option value="230">Trinidad y Tobago</option>
+          <option value="231">Tunez</option>
+          <option value="232">Turkmenistán</option>
+          <option value="233">Turquía</option>
+          <option value="234">Tuvalu</option>
+          <option value="235">Ucrania</option>
+          <option value="236">Uganda</option>
+          <option value="237">Uruguay</option>
+          <option value="238">Uzbekistán</option>
+          <option value="239">Vanuatu</option>
+          <option value="240">Venezuela</option>
+          <option value="241">Vietnam</option>
+          <option value="242">Wallis y Futuna</option>
+          <option value="243">Yemen</option>
+          <option value="244">Yibuti</option>
+          <option value="245">Zambia</option>
+          <option value="246">Zimbabue</option>
+        </select>
+        <input type="hidden" id="pais_texto" name="pais_texto">
+
+      </div>
+
+      <div class="from-group">
+        <label for="direccion" class="control-label">Direccion:</label>
+        <input type="text" id="direccion" name="direccion" class="form-control" required
+          data-error="La direccion es requerida" placeholder="Direccion de vivienda"
+          value="{{ formulario.direccion.value }}" />
+        <div class="help-block"></div>
+      </div>
+    </div>
+  </div> {% comment %}Aqui termina la card de medios de contacto{% endcomment %}
+  <hr />
+  {% comment %}Datos varios{% endcomment %}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Datos Varios</h4>
+      <div class="form-group">
+        <label for="nacimiento" class="control-label">Fecha de nacimiento*</label>
+        <input type="date" id="nacimiento" name="nacimiento" class="form-control nacimiento hasDatepicker" required
+          data-error="La fecha de nacimiento es requerida" placeholder="dd/mm/aaaa" maxlength="10"
+          value="{{ formulario.nacimiento.value|date:'Y-m-d'|default_if_none:'' }}"
+          max="{{ min_fecha|date:'Y-m-d' }}" />
+        <div class="invalid-feedback">Seleccione su fecha de nacimiento </div>
+
+        <div class="help-block"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="sexo" class="control-label">Sexo*</label>
+        <select id="sexo" name="sexo" class="form-control" required data-error="Por favor ingrese su sexo"
+          value="{{ formulario.sexo.value }}">
+          <option value=""></option>
+          <option id="hombre" value="1">Hombre</option>
+          <option id="mujer" value="2">Mujer</option>
+        </select>
+        <input type="hidden" id="sexo_texto" name="sexo_texto">
+        <div class="help-block"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="genero" class="control-label">Género*</label>
+        <select id="genero" name="genero" class="form-control" required data-error="Por favor ingrese su género"
+          value="{{ formulario.genero.value }}">
+          <option id="generoS"></option>
+          <option id="generoMas" value="1">Masculino</option>
+          <option id="generoFem" value="2">Femenino</option>
+          <option id="generoLgb" value="5">LGBTIQ+</option>
+          <option id="generoNs" value="10">Prefiero no decirlo</option>
+        </select>
+        <input type="hidden" id="genero_texto" name="genero_texto">
+
+        <div class="help-block"></div>
+      </div>
+    </div>
+  </div> {% comment %}fin de la card de Datos varios{% endcomment %}
+
+  <div class="form-group">
+    <hr />
+    <div>
+      <button type="submit" class="btn btn-success btn-block btn-lg" id="btn-registrar">Enviar</button>
+      <a name="btnCancelar" id="btnCancelar" class="btn btn-primary btn-block btn-lg"
+        href="{% url 'index-estudiante' %}" role="button">Cancelar</a>
+    </div>
+  </div>
+</form>
