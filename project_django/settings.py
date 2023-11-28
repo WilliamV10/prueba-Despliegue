@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','').split(" ")
 
 
 # Application definition
@@ -89,7 +89,7 @@ DATABASES = {
     }
 }
 database_url= os.environ.get('DATABASE_URL')
-DATABASES['default'] = dj_database_url.parse(database_url)
+DATABASES['default'] = dj_database_url.parse('postgres://siges_db_vomt_user:912qov4JVQ1TfZOreklUTwaT3KSimsiI@dpg-clj4i8mg1b2c73anbvs0-a.oregon-postgres.render.com/siges_db_vomt')
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -143,3 +143,5 @@ AUTHENTICATION_BACKENDS = ['SIGES.backends.EmailBackend']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# Puedes cambiar 'staticfiles' por el nombre del directorio que prefieras
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
