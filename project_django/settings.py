@@ -79,16 +79,7 @@ WSGI_APPLICATION = 'project_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'siges_db',  # Reemplaza con el nombre de tu base de datos
-        'USER': 'postgres',
-        'PASSWORD': '1234',  # Reemplaza con tu contraseña
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+DATABASES = {}
 database_url= os.environ.get('DATABASE_URL')
 DATABASES['default'] = dj_database_url.parse('postgres://siges_db_vomt_user:912qov4JVQ1TfZOreklUTwaT3KSimsiI@dpg-clj4i8mg1b2c73anbvs0-a.oregon-postgres.render.com/siges_db_vomt')
 # Password validation
