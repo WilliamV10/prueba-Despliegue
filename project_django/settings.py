@@ -80,10 +80,20 @@ WSGI_APPLICATION = 'project_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {}
-database_url= os.environ.get('DATABASE_URL')
-DATABASES['default'] = dj_database_url.parse('postgres://siges_db_vomt_user:912qov4JVQ1TfZOreklUTwaT3KSimsiI@dpg-clj4i8mg1b2c73anbvs0-a.oregon-postgres.render.com/siges_db_vomt')
-# Password validation
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'siges_db_vomt',  # Reemplaza con el nombre de tu base de datos
+        'USER': 'siges_db_vomt_user',
+        'PASSWORD': '912qov4JVQ1TfZOreklUTwaT3KSimsiI',  # Reemplaza con tu contraseña
+        'HOST': 'dpg-clj4i8mg1b2c73anbvs0-a',
+        'PORT': '5432',
+    }
+}
+
+# database_url= os.environ.get('DATABASE_URL')
+# DATABASES['default'] = dj_database_url.parse('postgres://siges_db_vomt_user:912qov4JVQ1TfZOreklUTwaT3KSimsiI@dpg-clj4i8mg1b2c73anbvs0-a.oregon-postgres.render.com/siges_db_vomt')
+# # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
